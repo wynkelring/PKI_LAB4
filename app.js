@@ -4,9 +4,9 @@ const OAuth2Data = require('./google_key.json')
 
 const app = express()
 
-const CLIENT_ID = OAuth2Data.web.id;
-const CLIENT_SECRET = OAuth2Data.web.secret;
-const REDIRECT_URL = OAuth2Data.web.redirect
+const CLIENT_ID = OAuth2Data.web.client_id;
+const CLIENT_SECRET = OAuth2Data.web.client_secret;
+const REDIRECT_URL = OAuth2Data.web.redirect_uris;
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 var authed = false;
@@ -58,5 +58,5 @@ app.get('/auth/google/callback', function (req, res) {
     }
 });
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 app.listen(port, () => console.log(`Server running at ${port}`));
