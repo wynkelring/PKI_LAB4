@@ -29,10 +29,16 @@ app.get('/', (req, res) => {
                 loggedUser = result.data.name;
 				console.log(loggedUser);
             }
-			res.send('Logged in: '.concat(loggedUser, ' <img src="', result.data.picture,'" height="23" width="23"'))
+			head = '<html><head><meta name="google-signin-client_id" content="745702520839-9k6tqtgs8t5mbs8cjnu39j0onhqe6l76.apps.googleusercontent.com"></head>';
+			gapi = '<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>';
+			script = '<script>function signOut() {var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log("User signed out.");});auth2.disconnect();}function onLoad() {gapi.load("auth2", function() {gapi.auth2.init();});}</script>';
+			logOut = '<a href="#" onclick="signOut();">Sign out</a>';
+			res.send(''.concat(head, '<body>Logged in: ', loggedUser, ' <img src="', result.data.picture, '" height="23" width="23"><br>', script, gapi, logOut, '</body></html>'));
         });
     }
-})
+});
+
+
 
 app.get('/auth/google/callback', function (req, res) {
     const code = req.query.code
