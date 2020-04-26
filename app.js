@@ -22,14 +22,14 @@ app.get('/', (req, res) => {
         res.redirect(url);
     } else {
         const oauth2 = google.oauth2({ version: 'v2', auth: oAuth2Client });
-        oauth2.userinfo.v2.me.get((err, res) => {
+        oauth2.userinfo.v2.me.get((err, result) => {
             if (err) {
 				return console.log('The API returned an error: ' + err);
 			} else {
-                loggedUser = res.data.name;
+                loggedUser = result.data.name;
 				console.log(loggedUser);
             }
-			res.send('Logged in: '.concat(loggedUser));
+			res.send('Logged in: '.concat(loggedUser, ' <img src="', result.data.picture,'" height="23" width="23"'))
         });
     }
 })
