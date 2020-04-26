@@ -1,8 +1,11 @@
 const { google } = require('googleapis');
-const express = require('express')
-const OAuth2Data = require('./google_key.json')
+const OAuth2Data = require('./google_key.json');
+const express         =     require('express')
+  , passport          =     require('passport')
+  , FacebookStrategy  =     require('passport-facebook').Strategy
+  , config            =     require('./fb_config.js')
+  , app               =     express();
 
-const app = express()
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
@@ -12,6 +15,12 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 var authed = false;
 
 app.get('/', (req, res) => {
+    res.send('<h1>PKI LAB4</h1><br>'.concat(
+        '<p><a href="/googleLogin">Google LogIn</a></p>',
+        '<p><a href="/auth/facebook">Facebook LogIn</a><br><a href="/auth/logout">Facebook LogOut</a></p>'));
+});
+
+app.get('/googleLogin', (req, res) => {
     if (!authed) {
         // Generate an OAuth URL and redirect there
         const url = oAuth2Client.generateAuthUrl({
@@ -29,11 +38,13 @@ app.get('/', (req, res) => {
                 loggedUser = result.data.name;
 				console.log(loggedUser);
             }
-			head = '<html><head><meta name="google-signin-client_id" content="745702520839-9k6tqtgs8t5mbs8cjnu39j0onhqe6l76.apps.googleusercontent.com"></head>';
-			gapi = '<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>';
-			script = '<script>function signOut() {var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log("User signed out.");});auth2.disconnect();}function onLoad() {gapi.load("auth2", function() {gapi.auth2.init();});}</script>';
-			logOut = '<a href="#" onclick="signOut();">Sign out</a>';
-			res.send(''.concat(head, '<body>Logged in: ', loggedUser, ' <img src="', result.data.picture, '" height="23" width="23"><br>', script, gapi, logOut, '</body></html>'));
+			html = '<html><head><meta name="google-signin-client_id" content="745702520839-9k6tqtgs8t5mbs8cjnu39j0onhqe6l76.apps.googleusercontent.com"></head><body>'.concat(
+				'Logged in: ', loggedUser,
+				' <img src="', result.data.picture, '" height="23" width="23"><br>',
+				'<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>',
+				'<script>function signOut() {var auth2 = gapi.auth2.getAuthInstance(); auth2.signOut().then(function () { console.log("User signed out.");});auth2.disconnect();}function onLoad() {gapi.load("auth2", function() {gapi.auth2.init();});}</script>',
+				'<a href="#" onclick="signOut();">Sign out</a></body></html>');
+			res.send(html);
         });
     }
 });
@@ -57,6 +68,47 @@ app.get('/auth/google/callback', function (req, res) {
         });
     }
 });
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user)
+});
+
+passport.use(new FacebookStrategy({
+    clientID: config.facebook_api_key,
+    clientSecret: config.facebook_api_secret,
+    callbackURL: config.callback_url
+  },
+  function(accessToken, refreshToken, user, done) {
+	return done(null, user);
+  }
+));
+
+app.get('/auth/facebook', passport.authenticate('facebook', {scope:"email"}));
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/' }));
+
+app.use('/auth/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+});
+
+const isAuthenticated = async (req, res, next) => {
+    if (req.isAuthenticated()) { return next(); }
+    res.redirect('/');
+}
+
+app.get('/account', isAuthenticated, (req, res) => {
+    res.send(req.user._json);
+});
+
+
 
 const port = process.env.PORT || 5000
 app.listen(port, () => console.log(`Server running at ${port}`));
