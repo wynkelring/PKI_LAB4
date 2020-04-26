@@ -16,27 +16,21 @@ app.get('/', (req, res) => {
         // Generate an OAuth URL and redirect there
         const url = oAuth2Client.generateAuthUrl({
             access_type: 'offline',
-            scope: 'https://www.googleapis.com/auth/gmail.readonly'
+            scope: 'https://www.googleapis.com/auth/userinfo.profile'
         });
         console.log(url)
         res.redirect(url);
     } else {
-        const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
-        gmail.users.labels.list({
-            userId: 'me',
-        }, (err, res) => {
-            if (err) return console.log('The API returned an error: ' + err);
-            const labels = res.data.labels;
-            if (labels.length) {
-                console.log('Labels:');
-                labels.forEach((label) => {
-                    console.log(`- ${label.name}`);
-                });
-            } else {
-                console.log('No labels found.');
+        const oauth2 = google.oauth2({ version: 'v2', auth: oAuth2Client });
+        oauth2.userinfo.v2.me.get((err, res) => {
+            if (err) {
+				return console.log('The API returned an error: ' + err);
+			} else {
+                loggedUser = res.data.name;
+				console.log(loggedUser);
             }
+			res.send('Logged in: '.concat(loggedUser));
         });
-        res.send('Logged in')
     }
 })
 
