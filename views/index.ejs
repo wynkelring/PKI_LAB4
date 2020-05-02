@@ -72,12 +72,15 @@
 						</thead>
 						<tbody>
 							<% if(data.length){ 
-								for(var i = 0;i < data.length;i++) { %>
+								for(var i = 0;i < data.length;i++) { 
+									var joined = new Date(data[i].joined).toISOString();
+									var lastvisit = new Date(data[i].lastvisit).toISOString();
+							%>
 							<tr>
 								<td><%=data[i].id%></td>
 								<td><%=data[i].name%></td>
-								<td><%=Date(data[i].joined).toISOString()%></td>
-								<td><%=new Date(data[i].lastvisit).toISOString()%></td>
+								<td><%=joined%></td>
+								<td><%=lastvisit%></td>
 								<td><%=data[i].counter%></td>
 							</tr>
 							<% }
