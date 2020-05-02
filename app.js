@@ -39,8 +39,8 @@ app.get('/l5',function(req, res){
 });
 
 app.post('/submit', (req, res) => {
-	const { name } = req.body.name;
-	const { date } = new Date().getTime();
+	var name = req.body.name;
+	var date = new Date().getTime();
     console.log(name);
     console.log(date);
 
