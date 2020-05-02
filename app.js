@@ -48,7 +48,7 @@ app.post('/login', (req, res) => {
 	var name = req.body.name;
 	var date = new Date().getTime();
 
-	client.query('UPDATE public."users" SET lastvisit = $1 WHERE name = $2', [date, name], (error, results) => {
+	client.query('UPDATE public."users" SET lastvisit = $1, count = count + 1 WHERE name = $2', [date, name], (error, results) => {
 		if (error) {
 			throw error
 		}
@@ -71,13 +71,14 @@ app.post('/register', (req, res) => {
 }); 
 
 app.get('/', (req, res) => {
-    var message = '<h1>PKI LAB5</h1><br>'.concat(
-	'<a href="/login">Login</a><br>',
-	'<a href="/register">Register</a><br>',
-	'<a href="/lab4">LAB4</a>');
 	getUsers();
 	
 	client.query('SELECT * FROM public."users"', (error, result) => {
+		var message = '<h1>PKI LAB5</h1><br>'.concat(
+		'<a href="/login">Login</a><br>',
+		'<a href="/register">Register</a><br>',
+		'<a href="/lab4">LAB4</a>');
+		
 		if (error) {
 			throw error	
 		}
