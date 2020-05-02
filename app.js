@@ -15,6 +15,10 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 var authed = false;
 
 app.get('/', (req, res) => {
+    res.send('<h1>PKI LAB5</h1><br>');
+});
+
+app.get('/lab4', (req, res) => {
     res.send('<h1>PKI LAB4</h1><br>'.concat(
         '<p><a href="/googleLogin">Google LogIn</a></p>',
         '<p><a href="/auth/facebook">Facebook LogIn</a><br><a href="/auth/logout">Facebook LogOut</a></p>'));
