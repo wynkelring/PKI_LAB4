@@ -73,8 +73,8 @@
 						<tbody>
 							<% if(data.length){ 
 								for(var i = 0;i < data.length;i++) { 
-									var joined = new Date(data[i].joined);
-									var lastvisit = new Date(data[i].lastvisit);
+									var joined = new Date(parseInt(data[i].joined));
+									var lastvisit = new Date(parseInt(data[i].lastvisit));
 							%>
 							<tr>
 								<td><%=data[i].id%></td>
