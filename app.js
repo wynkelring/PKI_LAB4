@@ -72,7 +72,10 @@ app.post('/login', (req, res) => {
 				req.session.username = name;
 				res.redirect('/');
 			})
+		} else {
+			res.redirect('/error');
 		}
+		res.redirect('/');
 	})
 }); 
 
@@ -100,7 +103,10 @@ app.post('/register', (req, res) => {
 				}
 				res.redirect('/login');
 			})
+		} else {
+			res.redirect('/error');
 		}
+		res.redirect('/login');
 	})	
 });
 
@@ -112,6 +118,10 @@ app.get('/logout',function(req, res){
 		req.session.destroy();
 		res.redirect('/');
 	}
+});
+
+app.get('/error',function(req, res){
+	res.render('error');
 });
 
 app.get('/', (req, res) => {
