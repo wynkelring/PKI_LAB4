@@ -63,7 +63,7 @@ app.post('/register', (req, res) => {
 	var name = req.body.name;
 	var date = new Date().getTime();
 
-	client.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2)', [name, date, date], (error, results) => {
+	client.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2, $3)', [name, date, date], (error, results) => {
 		if (error) {
 			throw error
 		}
