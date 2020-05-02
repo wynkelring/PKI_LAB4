@@ -67,8 +67,8 @@ app.post('/login', (req, res) => {
 				request.session.loggedin = true;
 				request.session.username = name;
 				res.redirect('/');
-			}
-		})
+			})
+		}
 	})
 }); 
 
