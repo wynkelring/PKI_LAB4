@@ -80,7 +80,6 @@ app.get('/', (req, res) => {
 		if (error) {
 			throw error	
 		}
-		console.log(result);
 		res.render('index', {data:result.rows});
 	})
 });
