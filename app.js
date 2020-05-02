@@ -40,9 +40,11 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+app.set('view engine', 'ejs');
 
 app.get('/login',function(req, res){
-  res.sendFile(path + 'index.html');
+	res.render('login');
+  //res.sendFile(path + 'index.html');
 });
 
 app.post('/login', (req, res) => {
