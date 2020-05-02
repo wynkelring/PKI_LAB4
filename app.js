@@ -40,27 +40,41 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.get('/l5',function(req, res){
+app.get('/login',function(req, res){
   res.sendFile(path + 'index.html');
 });
 
-app.post('/submit', (req, res) => {
+app.post('/login', (req, res) => {
 	var name = req.body.name;
 	var date = new Date().getTime();
-    console.log(name);
-    console.log(date);
 
-	/*pool.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2)', [name, date, date], (error, results) => {
+	pool.query('UPDATE public."users" SET lastvisit=`$1` WHERE name=`$2`', [date, name], (error, results) => {
 		if (error) {
 			throw error
 		}
-	})*/
-	res.redirect('/l5');
-	
+	})	
+}); 
+
+app.get('/register',function(req, res){
+  res.sendFile(path + 'index.html');
+});
+
+app.post('/register', (req, res) => {
+	var name = req.body.name;
+	var date = new Date().getTime();
+
+	pool.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2)', [name, date, date], (error, results) => {
+		if (error) {
+			throw error
+		}
+	})	
 }); 
 
 app.get('/', (req, res) => {
-    message = '<h1>PKI LAB5</h1><br>';
+    message = '<h1>PKI LAB5</h1><br>'.concat(
+	'<a href="/login">Login</a><br>',
+	'<a href="/register">Register</a><br>',
+	'<a href="/lab4">LAB4</a>');
 	getUsers();
 	
 	client.query('SELECT * FROM public."users"', (error, result) => {
