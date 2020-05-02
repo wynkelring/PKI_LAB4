@@ -1,3 +1,4 @@
+const { Client } = require('pg');
 const { google } = require('googleapis');
 const OAuth2Data = require('./google_key.json');
 const express         =     require('express')
@@ -14,8 +15,29 @@ const REDIRECT_URL = OAuth2Data.web.redirect_uris;
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 var authed = false;
 
+const client = new Client({
+	connectionString: process.env.DATABASE_URL,
+});
+client.connect();
+
+const getUsers = (request, response) => {
+	console.log('Pobieram dane ...');
+	client.query('SELECT * FROM public."users"', (error, res) => {
+		if (error) {
+			throw error	
+		}
+		console.log('Dostałem ...');
+		for (let row of res.rows) {
+			console.log(JSON.stringify(row));
+		}
+	})
+};
+
+
 app.get('/', (req, res) => {
     res.send('<h1>PKI LAB5</h1><br>');
+	res.send(getUsers);
+	
 });
 
 app.get('/lab4', (req, res) => {
