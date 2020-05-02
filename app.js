@@ -19,11 +19,7 @@ const client = new Client({
 	connectionString: process.env.DATABASE_URL,
 });
 client.connect();
-
-
-app.get('/', (req, res) => {
-    res.send('<h1>PKI LAB5</h1><br>');
-	const getUsers = (request, response) => {
+const getUsers = (request, response) => {
 	console.log('Pobieram dane ...');
 	client.query('SELECT * FROM public."users"', (error, res) => {
 		if (error) {
@@ -33,8 +29,13 @@ app.get('/', (req, res) => {
 		for (let row of res.rows) {
 			console.log(JSON.stringify(row));
 		}
-	})
+	})	
 };
+
+
+app.get('/', (req, res) => {
+    res.send('<h1>PKI LAB5</h1><br>');
+
 	
 });
 
