@@ -33,16 +33,13 @@ const getUsers = (request, response) => {
 		}
 	})
 };
-const createUser = (request, response) => {
-	
-};
 
 app.get('/l5',function(req, res){
   res.sendFile(path + 'index.html');
 });
 
 app.post('/submit', (req, res) => {
-	const { name } = request.body.name;
+	const name = req.body.name;
 	const date = new Date().getTime();
     console.log(name);
     console.log(date);
