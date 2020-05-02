@@ -7,7 +7,6 @@ const express         =     require('express')
   , config            =     require('./fb_config.js')
   , app               =     express();
   
-var router = express.Router();
 var path = __dirname + '/views/';
 
 
@@ -15,7 +14,7 @@ const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
 const REDIRECT_URL = OAuth2Data.web.redirect_uris;
 
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var authed = false;
 
 const client = new Client({
@@ -34,12 +33,28 @@ const getUsers = (request, response) => {
 		}
 	})
 };
+const createUser = (request, response) => {
+	
+};
 
-app.use('/',router);
-
-router.get('/l5',function(req, res){
+app.get('/l5',function(req, res){
   res.sendFile(path + 'index.html');
 });
+
+app.post('/submit', (req, res) => {
+	const { name } = request.body.name;
+	const date = new Date().getTime();
+    console.log(name);
+    console.log(date);
+
+	/*pool.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2)', [name, date, date], (error, results) => {
+		if (error) {
+			throw error
+		}
+	})*/
+	res.redirect('/l5');
+	
+}); 
 
 app.get('/', (req, res) => {
     message = '<h1>PKI LAB5</h1><br>';
