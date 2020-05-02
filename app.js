@@ -75,12 +75,13 @@ app.post('/register', (req, res) => {
 }); 
 
 app.get('/', (req, res) => {
-	//getUsers();
+	getUsers();
 	client.query('SELECT * FROM public."users" ORDER BY id', (error, result) => {
 		if (error) {
+			res.render('index', {data: null, isConnected: false});
 			throw error	
 		}
-		res.render('index', {data:result.rows});
+		res.render('index', {data: result.rows, isConnected: true});
 	})
 });
 
