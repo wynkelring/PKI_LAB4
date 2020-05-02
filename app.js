@@ -20,7 +20,10 @@ const client = new Client({
 });
 client.connect();
 
-const getUsers = (request, response) => {
+
+app.get('/', (req, res) => {
+    res.send('<h1>PKI LAB5</h1><br>');
+	const getUsers = (request, response) => {
 	console.log('Pobieram dane ...');
 	client.query('SELECT * FROM public."users"', (error, res) => {
 		if (error) {
@@ -32,11 +35,6 @@ const getUsers = (request, response) => {
 		}
 	})
 };
-
-
-app.get('/', (req, res) => {
-    res.send('<h1>PKI LAB5</h1><br>');
-	res.send(getUsers);
 	
 });
 
