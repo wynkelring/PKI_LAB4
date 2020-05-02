@@ -65,8 +65,8 @@ app.post('/login', (req, res) => {
 				if (error) {
 					throw error
 				}
-				request.session.loggedin = true;
-				request.session.username = name;
+				req.session.loggedin = true;
+				req.session.username = name;
 				res.redirect('/');
 			})
 		}
