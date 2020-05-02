@@ -29,13 +29,22 @@ const getUsers = (request, response) => {
 		for (let row of res.rows) {
 			console.log(JSON.stringify(row));
 		}
-	})	
+	})
 };
 
 
 app.get('/', (req, res) => {
     res.send('<h1>PKI LAB5</h1><br>');
 	getUsers();
+	
+	client.query('SELECT * FROM public."users"', (error, result) => {
+		if (error) {
+			throw error	
+		}
+		for (let row of result.rows) {
+			res.send(JSON.stringify(row));
+		}
+	})
 	
 });
 
