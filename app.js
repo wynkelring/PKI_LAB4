@@ -101,8 +101,8 @@ app.get('/logout',function(req, res){
 	if(!req.session.loggedin) {
 		res.redirect('/');
 	} else {
-		req.session.loggedin = false;
-		req.session.username = null;
+		req.logout();
+		res.redirect('/');
 	}
 });
 
