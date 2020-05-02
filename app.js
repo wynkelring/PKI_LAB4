@@ -3,6 +3,7 @@ const { google } = require('googleapis');
 const OAuth2Data = require('./google_key.json');
 const express         =     require('express')
   , passport          =     require('passport')
+  , session			  =		require('express-session')
   , FacebookStrategy  =     require('passport-facebook').Strategy
   , config            =     require('./fb_config.js')
   , app               =     express();
@@ -36,6 +37,11 @@ const getUsers = (request, response) => {
 	})
 };
 
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -49,17 +55,25 @@ app.get('/login',function(req, res){
 app.post('/login', (req, res) => {
 	var name = req.body.name;
 	var date = new Date().getTime();
-
-	client.query('UPDATE public."users" SET lastvisit = $1, counter = counter + 1 WHERE name = $2', [date, name], (error, results) => {
+	client.query('SELECT * FROM public."users" WHERE name = $1', [name], (error, resultSelect) => {
 		if (error) {
 			throw error
 		}
-		res.redirect('/login');
+		if (resultSelect.length > 0) {
+			client.query('UPDATE public."users" SET lastvisit = $1, counter = counter + 1 WHERE name = $2', [date, name], (error, resultUpdate) => {
+				if (error) {
+					throw error
+				}
+				request.session.loggedin = true;
+				request.session.username = name;
+				res.redirect('/');
+			}
+		})
 	})
 }); 
 
 app.get('/register',function(req, res){
-  res.sendFile(path + 'index.html');
+	res.render('register');
 });
 
 app.post('/register', (req, res) => {
@@ -81,7 +95,7 @@ app.get('/', (req, res) => {
 			res.render('index', {data: null, isConnected: false});
 			throw error	
 		}
-		res.render('index', {data: result.rows, isConnected: true});
+		res.render('index', {data: result.rows, isConnected: true, loggedin: req.session.loggedin, name: req.session.username});
 	})
 });
 
