@@ -92,6 +92,7 @@ app.post('/register', (req, res) => {
 		if (error) {
 			throw error
 		}
+		console.log(resultSelect);
 		if (resultSelect.rowCount == 0) {
 			client.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2, $3)', [name, date, date], (error, results) => {
 				if (error) {
