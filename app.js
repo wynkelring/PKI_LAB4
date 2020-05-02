@@ -34,7 +34,7 @@ const getUsers = (request, response) => {
 
 
 app.get('/', (req, res) => {
-    res.send('<h1>PKI LAB5</h1><br>');
+    message = '<h1>PKI LAB5</h1><br>';
 	getUsers();
 	
 	client.query('SELECT * FROM public."users"', (error, result) => {
@@ -42,9 +42,10 @@ app.get('/', (req, res) => {
 			throw error	
 		}
 		for (let row of result.rows) {
-			res.send(JSON.stringify(row));
+			message.concat(JSON.stringify(row));
 		}
-	})
+	});
+	res.send(message);
 	
 });
 
