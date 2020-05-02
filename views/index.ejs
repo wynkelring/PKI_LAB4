@@ -60,28 +60,33 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<table border="1" cellpadding="7" cellspacing="7">
-						<tr>
-							<th width="50px">No</th>
-							<th>Name</th>
-						</tr>
-									   
-						<% if(data.length){ 
-										
-						 for(var i = 0;i < data.length;i++) { %>
-						 
-						<tr>
-							<td><%=data[i].id%></td>
-							<td><%=data[i].name%></td>
-						</tr>
-					<% }
-					
-					 }else{ %>
-						 <tr>
-							<td colspan="5">No Data</td>
-						 </tr>
-					<% } %>
-													  
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Joined</th>
+								<th>Lastvisit</th>
+								<th>Counter</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% if(data.length){ 
+								for(var i = 0;i < data.length;i++) { %>
+							<tr>
+								<td><%=data[i].id%></td>
+								<td><%=data[i].name%></td>
+								<td><%=data[i].joined.toISOString()%></td>
+								<td><%=data[i].lastvisit.toISOString()%></td>
+								<td><%=data[i].counter%></td>
+							</tr>
+							<% }
+							}else{ %>
+							<tr>
+								<td colspan="5">No Data</td>
+							</tr>
+							<% } %>
+						</tbody>
 					</table>
 				</div>
 			</div>
