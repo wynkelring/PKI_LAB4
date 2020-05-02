@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 			throw error	
 		}
 		console.log(result);
-		res.render('index', {data:result});
+		res.render('index', {data:result.rows});
 	})
 });
 
