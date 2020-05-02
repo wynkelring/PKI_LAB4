@@ -64,7 +64,7 @@ app.post('/login', (req, res) => {
 			throw error
 		}
 		console.log(resultSelect.rowCount > 0);
-		if (resultSelect.rowCount > 0) {
+		if (resultSelect.rowCount == 1) {
 			client.query('UPDATE public."users" SET lastvisit = $1, counter = counter + 1 WHERE name = $2', [date, name], (error, resultUpdate) => {
 				if (error) {
 					throw error
@@ -88,12 +88,20 @@ app.get('/register',function(req, res){
 app.post('/register', (req, res) => {
 	var name = req.body.name;
 	var date = new Date().getTime();
-
-	client.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2, $3)', [name, date, date], (error, results) => {
+	
+	client.query('SELECT * FROM public."users" WHERE name = $1', [name], (error, resultSelect) => {
 		if (error) {
 			throw error
 		}
-		res.redirect('/register');
+		console.log(resultSelect.rowCount == 0);
+		if (resultSelect.rowCount > 0) {
+			client.query('INSERT INTO public."users" (name, joined, lastvisit) VALUES ($1, $2, $3)', [name, date, date], (error, results) => {
+				if (error) {
+					throw error
+				}
+				res.redirect('/login');
+			})
+		}
 	})	
 });
 
