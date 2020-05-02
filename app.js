@@ -19,7 +19,7 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 var authed = false;
 
 const client = new Client({
-	connectionString: "",
+	connectionString: process.env.DATABASE_URL,
 });
 client.connect();
 
