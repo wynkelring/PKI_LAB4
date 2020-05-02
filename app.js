@@ -35,7 +35,7 @@ const getUsers = (request, response) => {
 
 app.get('/', (req, res) => {
     res.send('<h1>PKI LAB5</h1><br>');
-
+	getUsers();
 	
 });
 
