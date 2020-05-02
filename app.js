@@ -48,7 +48,7 @@ app.post('/login', (req, res) => {
 	var name = req.body.name;
 	var date = new Date().getTime();
 
-	client.query('UPDATE public."users" SET lastvisit = $1, count = count + 1 WHERE name = $2', [date, name], (error, results) => {
+	client.query('UPDATE public."users" SET lastvisit = $1, counter = counter + 1 WHERE name = $2', [date, name], (error, results) => {
 		if (error) {
 			throw error
 		}
