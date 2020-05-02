@@ -6,6 +6,9 @@ const express         =     require('express')
   , FacebookStrategy  =     require('passport-facebook').Strategy
   , config            =     require('./fb_config.js')
   , app               =     express();
+  
+var router = express.Router();
+var path = __dirname + '/views/';
 
 
 const CLIENT_ID = OAuth2Data.web.client_id;
@@ -32,6 +35,11 @@ const getUsers = (request, response) => {
 	})
 };
 
+app.use('/',router);
+
+router.get('/l5',function(req, res){
+  res.sendFile(path + 'index.html');
+});
 
 app.get('/', (req, res) => {
     message = '<h1>PKI LAB5</h1><br>';
@@ -42,10 +50,11 @@ app.get('/', (req, res) => {
 			throw error	
 		}
 		for (let row of result.rows) {
-			message.concat(JSON.stringify(row));
+			message.concat(JSON.stringify(row), '<br>');
 		}
+		
+		res.send(message);
 	});
-	res.send(message);
 	
 });
 
