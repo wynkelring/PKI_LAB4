@@ -34,6 +34,8 @@ const getUsers = (request, response) => {
 	})
 };
 
+app.use(express.bodyParser());
+
 app.get('/l5',function(req, res){
   res.sendFile(path + 'index.html');
 });
