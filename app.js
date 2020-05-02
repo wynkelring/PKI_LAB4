@@ -59,8 +59,8 @@ app.post('/login', (req, res) => {
 		if (error) {
 			throw error
 		}
-		console.log(resultSelect);
-		if (resultSelect.length > 0) {
+		console.log(resultSelect.rowCount > 0);
+		if (resultSelect.rowCount > 0) {
 			client.query('UPDATE public."users" SET lastvisit = $1, counter = counter + 1 WHERE name = $2', [date, name], (error, resultUpdate) => {
 				if (error) {
 					throw error
