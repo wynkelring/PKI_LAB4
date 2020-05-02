@@ -50,6 +50,9 @@
 						<li class="nav-item">
 							<a class="nav-link" href="/register">Register</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/lab4">LAB4</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -57,19 +60,29 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<p class="lead">
-						<div class="login-form">
-							<form action="" method="post">
-								<h2 class="text-center">Log in</h2>       
-								<div class="form-group">
-									<input type="text" class="form-control" name="name" placeholder="Username" required="required">
-								</div>
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary btn-block">Log in</button>
-								</div>      
-							</form>
-						</div>
-					</p>
+					<table border="1" cellpadding="7" cellspacing="7">
+						<tr>
+							<th width="50px">No</th>
+							<th>Name</th>
+						</tr>
+									   
+						<% if(data.length){ 
+										
+						 for(var i = 0;i < data.length;i++) { %>
+						 
+						<tr>
+							<td><%=data[i].id%></td>
+							<td><%=data[i].name%></td>
+						</tr>
+					<% }
+					
+					 }else{ %>
+						 <tr>
+							<td colspan="5">No Data</td>
+						 </tr>
+					<% } %>
+													  
+					</table>
 				</div>
 			</div>
 		</div>

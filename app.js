@@ -44,7 +44,6 @@ app.set('view engine', 'ejs');
 
 app.get('/login',function(req, res){
 	res.render('login');
-  //res.sendFile(path + 'index.html');
 });
 
 app.post('/login', (req, res) => {
@@ -76,12 +75,13 @@ app.post('/register', (req, res) => {
 }); 
 
 app.get('/', (req, res) => {
-	getUsers();
-	var message = '<h1>PKI LAB5</h1><br>'.concat(
-		'<a href="/login">Login</a><br>',
-		'<a href="/register">Register</a><br>',
-		'<a href="/lab4">LAB4</a>');
-	res.send(message);
+	//getUsers();
+	client.query('SELECT * FROM public."users" ORDER BY id', (error, result) => {
+		if (error) {
+			throw error	
+		}
+		res.render('index', {data:result});
+	})
 });
 
 app.get('/lab4', (req, res) => {
