@@ -22,9 +22,10 @@ const client = new Client({
 	connectionString: process.env.DATABASE_URL,
 });
 client.connect();
+
 const getUsers = (request, response) => {
 	console.log('Pobieram dane ...');
-	client.query('SELECT * FROM public."users"', (error, res) => {
+	client.query('SELECT * FROM public."users" ORDER BY id', (error, res) => {
 		if (error) {
 			throw error	
 		}
@@ -72,23 +73,11 @@ app.post('/register', (req, res) => {
 
 app.get('/', (req, res) => {
 	getUsers();
-	
-	client.query('SELECT * FROM public."users"', (error, result) => {
-		var message = '<h1>PKI LAB5</h1><br>'.concat(
+	var message = '<h1>PKI LAB5</h1><br>'.concat(
 		'<a href="/login">Login</a><br>',
 		'<a href="/register">Register</a><br>',
 		'<a href="/lab4">LAB4</a>');
-		
-		if (error) {
-			throw error	
-		}
-		for (let row of result.rows) {
-			message.concat(JSON.stringify(row), '<br>');
-		}
-		
-		res.send(message);
-	});
-	
+	res.send(message);
 });
 
 app.get('/lab4', (req, res) => {
