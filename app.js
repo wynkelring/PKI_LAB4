@@ -102,6 +102,7 @@ app.get('/logout',function(req, res){
 		res.redirect('/');
 	} else {
 		req.logout();
+		req.session.destroy();
 		res.redirect('/');
 	}
 });
