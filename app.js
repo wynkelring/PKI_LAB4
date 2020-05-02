@@ -75,7 +75,6 @@ app.post('/login', (req, res) => {
 		} else {
 			res.redirect('/error');
 		}
-		res.redirect('/');
 	})
 }); 
 
@@ -106,7 +105,6 @@ app.post('/register', (req, res) => {
 		} else {
 			res.redirect('/error');
 		}
-		res.redirect('/login');
 	})	
 });
 
