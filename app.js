@@ -53,7 +53,7 @@ app.post('/login', (req, res) => {
 		if (error) {
 			throw error
 		}
-		response.status(200).send(`User modified with ID: ${id}`)
+		res.redirect('/login');
 	})
 }); 
 
@@ -69,7 +69,7 @@ app.post('/register', (req, res) => {
 		if (error) {
 			throw error
 		}
-		response.status(201).send(`User added with ID: ${result.insertId}`)
+		res.redirect('/register');
 	})	
 }); 
 
