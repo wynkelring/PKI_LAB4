@@ -49,7 +49,11 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 app.get('/login',function(req, res){
-	res.render('login');
+	if(!req.session.loggedin) {
+		res.render('login');
+	} else {
+		res.redirect('/');
+	}
 });
 
 app.post('/login', (req, res) => {
@@ -74,7 +78,11 @@ app.post('/login', (req, res) => {
 }); 
 
 app.get('/register',function(req, res){
-	res.render('register');
+	if(!req.session.loggedin) {
+		res.render('register');
+	} else {
+		res.redirect('/');
+	}
 });
 
 app.post('/register', (req, res) => {
@@ -87,7 +95,16 @@ app.post('/register', (req, res) => {
 		}
 		res.redirect('/register');
 	})	
-}); 
+});
+
+app.get('/logout',function(req, res){
+	if(!req.session.loggedin) {
+		res.redirect('/');
+	} else {
+		req.session.loggedin = false;
+		req.session.username = null;
+	}
+});
 
 app.get('/', (req, res) => {
 	getUsers();

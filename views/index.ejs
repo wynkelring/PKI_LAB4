@@ -72,11 +72,10 @@
 				<%
 					if(loggedin) {
 				%>
-					Witaj <%=name%> !
+					Witaj <b><%=name%></b> !
 				<% } else { %>
 					Zaloguj się
 				<% } %>
-				
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -88,12 +87,20 @@
 								<span class="sr-only">(current)</span>
 							</a>
 						</li>
-						<li class="nav-item">
+						<%
+							if(loggedin) {
+						%>
+							<li class="nav-item">
+								<a class="nav-link" href="/logout">Logout</a>
+							</li>
+						<% } else { %>
+							<li class="nav-item">
 							<a class="nav-link" href="/login">Login</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/register">Register</a>
 						</li>
+						<% } %>
 						<li class="nav-item">
 							<a class="nav-link" href="/lab4">LAB4</a>
 						</li>
